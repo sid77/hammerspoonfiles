@@ -1,2 +1,2 @@
 # hammerspoonfiles
-My Hammerspoon files
+My [Hammerspoon](http://www.hammerspoon.org/) files.
