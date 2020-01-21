@@ -2,12 +2,12 @@
 
 set -e
 
-GITHUB_DIR="$HOME/src/github.com"
+GH_DIR="$HOME/src/github.com"
 HSDIR="$HOME/.hammerspoon"
 SPOONSDIR="$HSDIR/Spoons"
 
 git_clone() {
-  REPO_DIR="$GITHUB_DIR/$1"
+  REPO_DIR="$GH_DIR/$1"
   mkdir -p "$REPO_DIR"
   ( cd "$REPO_DIR"
     if [ -d "$2" ]; then
@@ -21,21 +21,24 @@ git_clone() {
 }
 
 install_spoon() {
-  SPOON="$1.spoon"
+  GH_USER="$1"
+  GH_REPO="$2"
+  SPOON="$3.spoon"
   if [ ! -r "$SPOON" ]; then
-    ln -sf "$GITHUB_DIR/Hammerspoon/Spoons/Source/$SPOON" .
+    ( cd "$SPOONSDIR"
+      ln -sf "$GH_DIR/$GH_USER/$GH_REPO/Source/$SPOON" .
+    )
   fi
 }
 
 mkdir -p "$SPOONSDIR"
 chmod 0700 "$HSDIR"
 ( cd "$HSDIR"
-  ln -sf "$GITHUB_DIR/sid77/hammerspoonfiles/init.lua" .
+  ln -sf "$GH_DIR/sid77/hammerspoonfiles/init.lua" .
 )
 
 git_clone Hammerspoon Spoons
-( cd "$SPOONSDIR"
-  install_spoon ReloadConfiguration
-  install_spoon WindowHalfsAndThirds
-  install_spoon WindowScreenLeftAndRight
-)
+install_spoon Hammerspoon Spoons ReloadConfiguration
+
+git_clone scottwhudson Lunette
+install_spoon scottwhudson Lunette Lunette
